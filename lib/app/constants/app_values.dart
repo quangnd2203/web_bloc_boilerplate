@@ -10,7 +10,7 @@ double get viewPaddingTop => Get.mediaQuery.viewPadding.top;
 double get viewPaddingBot => Get.mediaQuery.viewPadding.bottom;
 bool get isShowKeyboard => Get.mediaQuery.viewInsets.bottom > 0;
 
-const String APP_NAME = 'ViVi';
+const String APP_NAME = 'Quang Nguyen Porfolio';
 
 /// FLAVOR = dev => development
 /// FLAVOR = prod => product
