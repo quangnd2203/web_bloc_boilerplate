@@ -1,0 +1,10 @@
+FROM growerp/flutter-sdk-image:3.19.0
+
+# RUN apk update && \
+#     apk add git
+
+WORKDIR /web_bloc_boilerplate
+
+RUN flutter doctor
+
+COPY . .
