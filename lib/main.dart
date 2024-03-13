@@ -20,8 +20,7 @@ Future<void> main() async {
     systemNavigationBarContrastEnforced: true,
   ));
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
-  // flavor = (await const MethodChannel('flavor').invokeMethod<String>('getFlavor')) ?? 'dev';
-  flavor = 'dev';
+  flavor = const String.fromEnvironment('FLAVOR', defaultValue: 'dev');
   await AppPrefs.initListener();
   Logger().d('RUNNING IN $flavor ENVIRONMENT'.toUpperCase());
   runApp(const App());
