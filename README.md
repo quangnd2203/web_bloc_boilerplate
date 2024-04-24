@@ -1,53 +1,41 @@
-# Bloc Boilerplate
+# Công nghệ sử dụng: 
+- Python-Streamlit
+- Sử dụng model 'gpt-3.5-turbo-0125' của openAI làm chuẩn
+# Các thư viện sử dụng:
+## Chính:
+openai==1.3.2(Fine-tuning)
+## Layout:
+streamlit==1.32.2
+extra-streamlit-components==0.1.71
+## Khác:
+python-dotenv==1.0.1(Biến môi trường)
+tiktoken==0.6.0(Đếm token trong file input)
+collection==0.1.6(Validation file input)
+pandas==2.2.1(Xử lý dataframe)
 
-## Environment:
+# Tóm tắt các phần chính sẽ demo:
+- Create Fine-Tune model
+- Update Fine-Tune model
+- Demo chat
 
-- FLAVOR: 
-    - prod: production env 
-    - staging: staging env
-    - dev: developer env
+# Create Fine-Tune model:
+## Chuẩn bị file jsonl
+- Sử dụng file có sẵn
+- Nhập vào bảng data-frame => convert lại thành jsonl
+## Thao tác với các optional
+- Thêm model suffix name để phân biệt các model
+- Percentage of dataset to test (1-100%): Chia file data thành training và testing file
+- Batch-Size (1-32): số lượng mẫu trong mỗi vòng lặp traning
+- Learning-rate (0.1-10): điều chỉnh tốc độ học
+- Number of epochs (1-10): gọi a một chu kì học tập thì Number of epochs chính là số lần lặp lại của chu kỳ đó.
+## Validation
+- Kiểm tra file jsonl hợp lệ
+- Đếm số token của một file jsonl input vào.
 
-## How to run ?
-### By cmd:
-- Run cmd: flutter pub get  
-- Run cmd: flutter run --flavor [FLAVOR]
-- Ex: flutter run --flavor FLAVOR=dev
-### By Android studio run:
-- Run cmd: flutter pub get
-- In "run/debug configurations"
-- In line "Addition run args" type "flutter run --flavor FLAVOR=[FLAVOR]"
-- Done!
+# Update Fine-Tune model:
+- Demo giống như phần create
+- Bổ sung thêm phần chọn model để update + validation khi chưa chọn modal nào.
 
-## How to build ?
-### APK:
-- Run cmd: flutter pub get
-- Run cmd: flutter build apk --flavor FLAVOR=[FLAVOR]
-### AAB (send to GooglePlay):
-- Run cmd: flutter pub get
-- Run cmd: flutter build appbundle --flavor FLAVOR=[FLAVOR]
-
-[//]: # (### IPA &#40;iOS&#41;:)
-
-[//]: # (- Step 1: )
-
-[//]: # (  + Run cmd: cd ios)
-
-[//]: # (- Step 2:)
-
-[//]: # (  + Run cmd: flutter pub get)
-
-[//]: # (- Step 3:)
-
-[//]: # (  + Run cmd: pod install)
-
-[//]: # (- Step 4:)
-
-[//]: # (  + Run cmd: flutter build ipa --dart-define FLAVOR=[FLAVOR])
-
-[//]: # (  + Open Xcode. In Target select "Runner". Select "Signing & Capabilities". Then, in Signing &#40;Release & Profile&#41; you import A provisioning profile corresponding to your App Bundle ID.)
-
-[//]: # (- Step 5:)
-
-[//]: # (  + In Xcode Topbar, select Product -> Archive.)
-
-[//]: # (  + After done, you select Window -> Organizer. And distribution app.)
+# Demo chat:
+- Chọn model Fine-Tuning có sẵn
+- Nhập chat rồi hiển thị kết quả của model Fine-Tuning đó và của model gốc
