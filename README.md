@@ -1,6 +1,7 @@
 # Công nghệ sử dụng: 
 - Python-Streamlit
 - Sử dụng model 'gpt-3.5-turbo-0125' của openAI làm chuẩn
+- Dùng docker để deploy môi trường
 # Các thư viện sử dụng:
 ## Chính:
 openai==1.3.2(Fine-tuning)
