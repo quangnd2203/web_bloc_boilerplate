@@ -4,15 +4,15 @@
 - Dùng docker để deploy môi trường
 # Các thư viện sử dụng:
 ## Chính:
-openai==1.3.2(Fine-tuning)
+- openai==1.3.2(Fine-tuning)
 ## Layout:
-streamlit==1.32.2
-extra-streamlit-components==0.1.71
+- streamlit==1.32.2
+- extra-streamlit-components==0.1.71
 ## Khác:
-python-dotenv==1.0.1(Biến môi trường)
-tiktoken==0.6.0(Đếm token trong file input)
-collection==0.1.6(Validation file input)
-pandas==2.2.1(Xử lý dataframe)
+- python-dotenv==1.0.1(Biến môi trường)
+- tiktoken==0.6.0(Đếm token trong file input)
+- collection==0.1.6(Validation file input)
+- pandas==2.2.1(Xử lý dataframe)
 
 # Tóm tắt các phần chính sẽ demo:
 - Create Fine-Tune model
