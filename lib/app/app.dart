@@ -2,18 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' as bloc;
-import 'package:get/get.dart' as getx;
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import '../generated/l10n.dart';
 import 'blocs/application/application_cubit.dart';
 import 'blocs/language/language_cubit.dart';
 import 'blocs/language/language_select_state.dart';
 import 'blocs/theme/theme_cubit.dart';
 import 'constants/constants.dart';
 import 'routes/app_pages.dart';
-import 'routes/app_route_infomation_parser.dart';
-import 'routes/app_routes.dart';
-import 'translations/app_translations.dart';
-import 'ui/widgets/loading_full_screen.dart';
+import 'ui/ui.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -28,12 +27,16 @@ class _AppState extends State<App> with WidgetsBindingObserver implements bloc.B
   final Logger logger = Logger();
 
   void _initialBlocs() {
-    getx.Get.put(ApplicationCubit(), permanent: true);
-    getx.Get.put(ThemeCubit(), permanent: true);
-    getx.Get.put(LanguageCubit(), permanent: true);
-    // getx.Get.put(ProfileCubit(), permanent: true);
-    // getx.Get.put(AuthenticationCubit(), permanent: true);
-    // getx.Get.put(LocalServerCubit()..firstCreateLocalServerAppClient(), permanent: true);
+    GetIt.I.registerSingleton(ApplicationCubit());
+    GetIt.I.registerSingleton(ThemeCubit());
+    GetIt.I.registerSingleton(LanguageCubit());
+  }
+
+  Future<void> preloadAsset() async {
+    await Future.wait(<Future>[
+      precacheImage(AssetImage(AppImages.png('banner_shape01')), context),
+      precacheImage(AssetImage(AppImages.png('banner_shape02')), context),
+    ]);
   }
 
   @override
@@ -53,6 +56,12 @@ class _AppState extends State<App> with WidgetsBindingObserver implements bloc.B
   }
 
   @override
+  Future<void> didChangeDependencies() async {
+    await preloadAsset();
+    super.didChangeDependencies();
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     Logger().d('ChangeAppLifecycleState: $state');
   }
@@ -67,32 +76,30 @@ class _AppState extends State<App> with WidgetsBindingObserver implements bloc.B
       child: bloc.MultiBlocListener(
         listeners: <bloc.BlocListener>[
           bloc.BlocListener<LanguageCubit, LanguageSelectState>(
-            bloc: getx.Get.find<LanguageCubit>(),
+            bloc: GetIt.I.get<LanguageCubit>(),
             listener: (BuildContext context, LanguageSelectState state) {
-              getx.Get.updateLocale(state.locale);
+              S.load(state.locale);
             },
           ),
         ],
         child: bloc.BlocBuilder<ThemeCubit, ThemeState>(
-          bloc: getx.Get.find<ThemeCubit>(),
+          bloc: GetIt.I.get<ThemeCubit>(),
           builder: (BuildContext context, ThemeState state) {
-            return getx.GetMaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              theme: (state.mode == ThemeMode.light ? state.lightTheme : state.darkTheme).copyWith(
-                scaffoldBackgroundColor: AppColors.getWhiteAndBlack,
-              ),
+            return MaterialApp.router(
+              routerConfig: AppPages.routes,
+              localizationsDelegates: const [
+                S.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
               title: APP_NAME,
-              getPages: AppPages.pages,
-              // initialRoute: Routes.SPLASH,
-              defaultTransition: getx.Transition.cupertino,
-              locale: getx.Get.find<LanguageCubit>().state.locale,
-              routeInformationParser: AppRouteInformationParser(
-                initialRoute: Routes.home.route,
-              ),
-              routerDelegate: getx.GetDelegate(),
-              translationsKeys: AppTranslation.translations,
-              builder: (BuildContext context, Widget? child) {
-                return LoadingFullScreen(child: child!);
+              debugShowCheckedModeBanner: false,
+              theme: (state.mode == ThemeMode.light ? state.lightTheme : state.darkTheme),
+              builder: (context, child) {
+                return LoadingFullScreen(
+                  child: child!,
+                );
               },
             );
           },

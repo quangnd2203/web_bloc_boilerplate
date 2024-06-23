@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import '../../constants/app_colors.dart';
-import '../../constants/app_text_styles.dart';
+import '../../constants/constants.dart';
 import '../../extensions/hex_color.dart';
 
 class CustomDropdownController extends ChangeNotifier {
@@ -33,11 +31,17 @@ class CustomDropdown<T> extends StatefulWidget {
     this.value,
     this.valueBuilder,
     this.isEnabled = true,
+    this.hintStyle,
+    this.decoration,
+    this.padding,
   });
   final String hint;
+  final TextStyle? hintStyle;
   final CustomDropdownController? controller;
+  final EdgeInsets? padding;
   final Widget Function(BuildContext context) menuBuilder;
   final T? value;
+  final BoxDecoration? decoration;
   final Widget Function(BuildContext context, T? value)? valueBuilder;
   final bool isEnabled;
 
@@ -91,22 +95,18 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
           alignment: Alignment.centerRight,
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 28),
-              decoration: BoxDecoration(
-                color: AppColors.getCardBackground,
-                borderRadius: BorderRadius.circular(10),
-              ),
+              padding: widget.padding ?? const EdgeInsets.symmetric(vertical: 16, horizontal: 28),
+              decoration: widget.decoration ??
+                  BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
               child: Row(
                 children: <Widget>[
                   if (widget.value == null)
                     Expanded(
-                      child: Text(
-                        widget.hint,
-                        style: AppTextStyles.rubikMedium.copyWith(
-                          fontSize: 16,
-                          color: Theme.of(context).hintColor,
-                        ),
-                      ),
+                      child:
+                          Text(widget.hint, style: widget.hintStyle ?? AppTextStyles.getXlStyle(AppTextStyles.bold)),
                     )
                   else
                     Expanded(
@@ -136,7 +136,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: AppColors.getWhiteAndBlack,
+        color: AppColors.white,
         boxShadow: <BoxShadow>[
           BoxShadow(
             blurRadius: 6,
@@ -210,7 +210,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
     final Offset? offset = renderBox?.localToGlobal(Offset.zero);
     final double dx = offset?.dx ?? 0;
     final double dy = offset?.dy ?? 0;
-    if (dy + menuHeight > Get.height - 100) {
+    if (dy + menuHeight > MediaQuery.of(context).size.height - 100) {
       dyPosition = dy - menuHeight;
     } else {
       dyPosition = dy + height;

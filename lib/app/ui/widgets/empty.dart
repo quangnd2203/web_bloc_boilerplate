@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
+import '../../../generated/l10n.dart';
 import '../../constants/constants.dart';
 
 class LoadMoreEmpty extends StatelessWidget {
@@ -24,9 +24,9 @@ class LoadMoreEmpty extends StatelessWidget {
             Image.asset(AppImages.png('no_data'), width: 150, height: 150),
             const SizedBox(height: 5),
             Text(
-              (title ?? 'no_data_found').tr,
+              title ?? S.current.no_data_found,
               textAlign: TextAlign.center,
-              style: AppTextStyles.rubikRegular,
+              style: AppTextStyles.getLgStyle(AppTextStyles.regular),
             ),
             const SizedBox(height: 20),
             if(onRefresh != null)
@@ -40,12 +40,9 @@ class LoadMoreEmpty extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                     ),
                     Text(
-                      'refresh'.tr,
+                      S.current.refresh,
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.rubikRegular.copyWith(
-                        decoration: TextDecoration.underline,
-                        color: Theme.of(context).primaryColor,
-                      ),
+                      style: AppTextStyles.getLgStyle(AppTextStyles.regular),
                     ),
                   ],
                 ),
